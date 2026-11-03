@@ -2,90 +2,20 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111b">
-<title>Erfan 3D | صحنه پرتاب نمایشی</title>
+<meta name="theme-color" content="#07111b"><title>Erfan | فتاح ۲ ـ مدل سه‌بعدی و تصاویر واقعی</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Tahoma,Arial,sans-serif;background:#071626;color:#eef7fb}
-.scene{position:relative;width:100%;height:100svh;min-height:520px;overflow:hidden;background:linear-gradient(180deg,#061426 0%,#123b5b 54%,#d48a60 100%)}
-#view{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hud{position:absolute;top:16px;right:18px;left:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}
-.brand{font-weight:bold;font-size:clamp(17px,3vw,26px);text-shadow:0 2px 8px #0008}.brand span{color:#5ce0b5}
-.pill{font-size:10px;color:#d7eaf2;border:1px solid #a5c4d266;padding:7px 10px;border-radius:30px;background:#06182755}
-.back{position:absolute;top:65px;right:18px;color:#eaf7fa;text-decoration:none;font-size:12px;border:1px solid #b5d0db66;background:#09233888;border-radius:10px;padding:8px 11px}
-.panel{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:min(590px,calc(100% - 22px));max-height:38svh;overflow:auto;padding:12px 14px;background:#071827e8;border:1px solid #5a7b8b77;border-radius:16px;backdrop-filter:blur(12px);text-align:center;box-shadow:0 10px 38px #0005}
-h1{font-size:17px;margin:0 0 5px}.desc{font-size:11px;line-height:1.8;color:#bfd0d9;margin:0 0 9px}
-.tune{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:right;margin:8px 0}.tune label{display:block;font-size:11px;color:#c9dce5;margin-bottom:4px}.tune input{width:100%;accent-color:#58dcb4}
-.actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}button,.link{font:inherit;text-decoration:none;border:1px solid #527184;background:#183348;color:#f2f8fa;padding:9px 13px;border-radius:10px;cursor:pointer;font-size:11px}button.primary{background:#247b68;border-color:#55d6b0}.status{font-size:10px;color:#72e2ba;margin-top:7px;min-height:14px}
-.gallery{position:absolute;left:16px;top:82px;width:132px;display:grid;gap:7px}.gallery a{display:block;color:#eaf6fb;font-size:9px;text-decoration:none;border:1px solid #9bb9c366;background:#061827aa;border-radius:9px;padding:6px;line-height:1.6}.gallery a:hover{border-color:#5ce0b5}
-@media(max-width:600px){.gallery{top:auto;bottom:42%;left:10px;width:108px}.gallery a{font-size:8px}.panel{max-height:40svh}.back{top:58px}.pill{font-size:9px}}
-</style>
-</head>
-<body>
-<div class="scene">
-<canvas id="view"></canvas>
-<div class="hud"><div class="brand"><span>ERFAN</span> · 3D EXHIBITION</div><div class="pill">مدل سه‌بعدی نمایشی · بدون عکس پس‌زمینه</div></div>
-<a class="back" href="index.html">بازگشت به نمایشگاه</a>
-<div class="gallery">
-<a target="_blank" rel="noopener" href="https://www.tasnimnews.ir/fa/news/1402/08/28/2992033/">تصاویر واقعی منتشرشده · گزارش تسنیم ↗</a>
-<a target="_blank" rel="noopener" href="https://www.irna.ir/">خبرگزاری ایرنا ↗</a>
-</div>
-<section class="panel">
-<h1>صحنه پرتاب سه‌بعدی نمایشی</h1>
-<p class="desc">مدل سه‌بعدی هنری با نمای بازتر و آسمان گسترده. زاویه و شدت، فقط ظاهر صحنه را تغییر می‌دهند؛ هیچ فشار یا عملکرد واقعی محاسبه نمی‌شود.</p>
-<div class="tune">
-<div><label for="angle">زاویه نمایشی: <output id="angleVal">15°</output></label><input id="angle" type="range" min="0" max="80" value="15"></div>
-<div><label for="power">شدت جلوه نور و دود: <output id="powerVal">50٪</output></label><input id="power" type="range" min="10" max="100" value="50"></div>
-</div>
-<div class="actions"><button class="primary" id="start">شروع صعود نمایشی</button><button id="again">اجرای دوباره</button><a class="link" href="index.html">صفحه مدل</a></div>
-<div class="status" id="status">برای شروع، دکمه را بزن.</div>
-</section>
-</div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const canvas=document.getElementById('view'),scene=new THREE.Scene();
-scene.fog=new THREE.Fog(0x183c59,24,75);
-const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,150);
-camera.position.set(12,10,27);camera.lookAt(0,7,0);
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;
-scene.add(new THREE.HemisphereLight(0xd8edff,0x35404a,2.1));
-const sun=new THREE.DirectionalLight(0xffe1bf,3.0);sun.position.set(-9,18,10);scene.add(sun);
-const rim=new THREE.PointLight(0x5ac8ed,45,60);rim.position.set(9,10,-8);scene.add(rim);
-// Open sky: distant stars and layered mountain silhouettes
-const starGeo=new THREE.BufferGeometry(),starPts=[];
-for(let i=0;i<500;i++){const x=(Math.random()-.5)*95,y=5+Math.random()*48,z=-28-Math.random()*28;starPts.push(x,y,z)}
-starGeo.setAttribute('position',new THREE.Float32BufferAttribute(starPts,3));
-scene.add(new THREE.Points(starGeo,new THREE.PointsMaterial({color:0xe5f3ff,size:.11,transparent:true,opacity:.8})));
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(180,100),new THREE.MeshStandardMaterial({color:0x202b32,roughness:1}));
-ground.rotation.x=-Math.PI/2;ground.position.set(0,-.12,-12);scene.add(ground);
-for(let i=0;i<15;i++){const h=3+(i%5)*1.5,m=new THREE.Mesh(new THREE.ConeGeometry(5,h,5),new THREE.MeshStandardMaterial({color:i%2?0x263b49:0x314653,roughness:1}));m.position.set(-48+i*7, h/2-1,-18);m.scale.z=.55;scene.add(m)}
-const pad=new THREE.Mesh(new THREE.CylinderGeometry(3.2,3.8,.35,48),new THREE.MeshStandardMaterial({color:0x657680,metalness:.55,roughness:.55}));pad.position.y=.1;scene.add(pad);
-const rocket=new THREE.Group();scene.add(rocket);
-// Smooth, generic exhibition rocket silhouette; no internal or functional details
-const shellMat=new THREE.MeshStandardMaterial({color:0xb9c5c9,metalness:.72,roughness:.27});
-const shadowMat=new THREE.MeshStandardMaterial({color:0x344b59,metalness:.5,roughness:.4});
-const accentMat=new THREE.MeshStandardMaterial({color:0x3d9b83,metalness:.35,roughness:.35});
-const body=new THREE.Mesh(new THREE.CylinderGeometry(.72,.82,8.8,48,1,false),shellMat);body.position.y=5.5;rocket.add(body);
-const nose=new THREE.Mesh(new THREE.ConeGeometry(.72,2.5,48),shellMat);nose.position.y=11.15;rocket.add(nose);
-const baseRing=new THREE.Mesh(new THREE.TorusGeometry(.78,.09,12,48),shadowMat);baseRing.rotation.x=Math.PI/2;baseRing.position.y=1.12;rocket.add(baseRing);
-const stripe=new THREE.Mesh(new THREE.CylinderGeometry(.735,.83,.22,48),accentMat);stripe.position.y=7.3;rocket.add(stripe);
-const finMat=shadowMat;
-for(let k=0;k<4;k++){const fin=new THREE.Mesh(new THREE.BoxGeometry(.16,2.2,1.35),finMat);fin.position.set(0,2.0,0);fin.rotation.y=k*Math.PI/2;fin.position.x=Math.sin(k*Math.PI/2)*.78;fin.position.z=Math.cos(k*Math.PI/2)*.78;rocket.add(fin)}
-rocket.position.y=0;
-const flame=new THREE.Mesh(new THREE.ConeGeometry(.55,3.8,24),new THREE.MeshBasicMaterial({color:0xffa23e,transparent:true,opacity:0,depthWrite:false}));flame.position.y=-1.8;rocket.add(flame);
-const flameCore=new THREE.Mesh(new THREE.ConeGeometry(.25,2.8,20),new THREE.MeshBasicMaterial({color:0xfff0b2,transparent:true,opacity:0,depthWrite:false}));flameCore.position.y=-1.9;rocket.add(flameCore);
-const smokeGroup=new THREE.Group();scene.add(smokeGroup);const smokeMat=new THREE.MeshStandardMaterial({color:0xb8c5ca,transparent:true,opacity:.24,roughness:1});
-let smokeParts=[],launchStart=0,launching=false,angleValue=15,powerValue=.5;
-function makeSmoke(){for(let i=0;i<26;i++){const mesh=new THREE.Mesh(new THREE.SphereGeometry(.35+Math.random()*.6,12,10),smokeMat.clone());mesh.position.set((Math.random()-.5)*2,.3+Math.random()*1.5,(Math.random()-.5)*1.6);smokeGroup.add(mesh);smokeParts.push({mesh,life:1,drift:(Math.random()-.5)*.018})}}
-function resetSmoke(){for(const p of smokeParts){smokeGroup.remove(p.mesh);p.mesh.geometry.dispose();p.mesh.material.dispose()}smokeParts=[]}
-function setControls(){angleValue=Number(document.getElementById('angle').value);powerValue=Number(document.getElementById('power').value)/100;document.getElementById('angleVal').textContent=angleValue+'°';document.getElementById('powerVal').textContent=Math.round(powerValue*100)+'٪';rocket.rotation.z=-THREE.MathUtils.degToRad(angleValue)*.35;flame.scale.setScalar(.45+powerValue);flameCore.scale.setScalar(.45+powerValue);rim.intensity=20+powerValue*40}
-document.getElementById('angle').addEventListener('input',setControls);document.getElementById('power').addEventListener('input',setControls);setControls();
-function start(){launching=true;launchStart=performance.now();rocket.position.y=0;resetSmoke();makeSmoke();document.getElementById('status').textContent='انیمیشن صعود نمایشی در حال اجراست…'}
-document.getElementById('start').addEventListener('click',start);document.getElementById('again').addEventListener('click',start);
-function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)}addEventListener('resize',resize);
-function tick(t){requestAnimationFrame(tick);const elapsed=launching?(t-launchStart)/1000:0;if(launching){const q=Math.min(1,elapsed/6);rocket.position.y= q*19;flame.material.opacity=.85;flameCore.material.opacity=.95;if(elapsed>6){launching=false;flame.material.opacity=0;flameCore.material.opacity=0;document.getElementById('status').textContent='نمایش پایان یافت؛ برای تکرار دوباره بزن.'}}else{flame.material.opacity=0;flameCore.material.opacity=0}
-for(let i=smokeParts.length-1;i>=0;i--){const p=smokeParts[i];p.life-=.0045;p.mesh.position.y+=.025;p.mesh.position.x+=p.drift;p.mesh.scale.multiplyScalar(1.002);p.mesh.material.opacity=Math.max(0,p.life*.23);if(p.life<=0){smokeGroup.remove(p.mesh);p.mesh.geometry.dispose();p.mesh.material.dispose();smokeParts.splice(i,1)}}
-renderer.render(scene,camera)}
-requestAnimationFrame(tick);
-</script>
-</body></html>
+*{box-sizing:border-box}body{margin:0;background:#071522;color:#edf6fa;font-family:Tahoma,Arial,sans-serif}.wrap{max-width:1250px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.brand{font-size:23px;font-weight:bold}.brand span{color:#5ce0b5}.back,a{color:#68dfba}.back{border:1px solid #3a6572;border-radius:10px;padding:9px 13px;text-decoration:none}.intro{color:#b9cbd5;font-size:13px;line-height:1.9;margin:0 0 16px}.card{background:#102333;border:1px solid #2c4b5d;border-radius:17px;overflow:hidden;margin-bottom:17px}.head{padding:15px 17px;border-bottom:1px solid #294354}.head h1,.head h2{font-size:17px;margin:0 0 5px}.head p{font-size:11px;color:#afc3ce;margin:0;line-height:1.8}.viewer{position:relative;background:radial-gradient(ellipse at center,#1b3545,#06111b);height:min(68vh,690px);min-height:430px}.viewer iframe{width:100%;height:100%;border:0}.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px}.photos figure{margin:0;background:#091925;border:1px solid #2a4556;border-radius:12px;overflow:hidden}.photos img{display:block;width:100%;height:230px;object-fit:contain;background:#0b1822}.photos figcaption{padding:9px 10px;font-size:11px;color:#c5d5dc;line-height:1.7}.credits{padding:0 16px 16px;font-size:11px;color:#a9bdc7;line-height:1.9}.note{padding:13px 15px;border-radius:12px;background:#0a1b28;color:#b7cbd5;font-size:11px;line-height:1.9;margin-top:12px}@media(max-width:720px){.photos{grid-template-columns:1fr}.photos img{height:210px}.viewer{height:58vh;min-height:360px}.wrap{padding:12px}.brand{font-size:19px}}
+</style></head><body><main class="wrap">
+<header class="top"><div class="brand"><span>ERFAN</span> · FATTAH-2 3D</div><a class="back" href="index.html">بازگشت به پروژه</a></header>
+<p class="intro">این صفحه برای ارائه مدرسه دو بخش دارد: نمایشگر سه‌بعدی قابل چرخش و بزرگ‌نمایی، و تصاویر واقعی منتشرشده از مراسم رونمایی فتاح ۲.</p>
+<section class="card"><div class="head"><h1>مدل سه‌بعدی فتاح-۰۲</h1><p>مدل سه‌بعدی ساخته‌شده توسط کاربر Sketchfab؛ غیررسمی است و لزوماً بازسازی دقیق یا تأییدشده از نمونه واقعی نیست. با ماوس مدل را بچرخان و زوم کن.</p></div>
+<div class="viewer"><iframe title="Fattah-02 3D model on Sketchfab" src="https://sketchfab.com/models/c913a0f2c664464689078f333af67048/embed?autostart=0&ui_theme=dark&dnt=1" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></div>
+<div class="credits">اگر نمایشگر سه‌بعدی در اینترنت مدرسه باز نشد، از لینک مستقیم مدل استفاده کن: <a href="https://sketchfab.com/3d-models/fattah-02-hypersonic-missile-c913a0f2c664464689078f333af67048" target="_blank" rel="noopener">باز کردن مدل در Sketchfab</a>.</div></section>
+<section class="card"><div class="head"><h2>تصاویر واقعی از رونمایی فتاح ۲</h2><p>عکس‌های خبری منتشرشده در ۲۰ نوامبر ۲۰۲۳؛ اعتبار عکس و انتساب آن در منبع اصلی قابل بررسی است.</p></div>
+<div class="photos">
+<figure><img src="https://cdn1.img.spnfa.ir/img/07e7/0b/14/18699308_0:0:1200:675_1920x0_80_0_0_70830830c23425f0b37af188adfdc36a.jpg.webp" alt="فتاح ۲ در نمایشگاه رونمایی" loading="lazy"><figcaption>نمایش فتاح ۲ در مراسم رونمایی</figcaption></figure>
+<figure><img src="https://cdn1.img.spnfa.ir/img/541/25/5412514_0:115:1000:515_1920x0_80_0_0_28ad393ee115a7f9a0f38fb829cdaf51.jpg.webp" alt="تصویر دوم از گزارش تصویری" loading="lazy"><figcaption>تصویر تکمیلی از گالری گزارش</figcaption></figure>
+<figure><img src="https://cdn1.img.spnfa.ir/img/541/25/5412514_72:0:1000:696_1920x0_80_0_0_2471e4c219a72603089a1f1edf9ce950.jpg.webp" alt="تصویر سوم از گزارش تصویری" loading="lazy"><figcaption>نمای دیگر از گزارش تصویری</figcaption></figure>
+</div><div class="credits">منبع: <a href="https://spnfa.ir/20231120/رونمایی-موشک-فتاح--ایران-18699322.html" target="_blank" rel="noopener">گزارش تصویری اسپوتنیک ایران</a>؛ عکس اصلی با اعتبار IRNA معرفی شده است. در صورت مسدودشدن تصاویر، گزارش منبع را باز کن.</div></section>
+<div class="note">نکته برای ارائه: عکس‌های بالا مستند خبری هستند؛ مدل سه‌بعدی از یک سازنده مستقل در Sketchfab است و نباید آن را مدل رسمی یا نقشه مهندسی واقعی معرفی کرد. این صفحه صرفاً برای مشاهده ظاهری و آموزش بصری است.</div>
+</main></body></html>
